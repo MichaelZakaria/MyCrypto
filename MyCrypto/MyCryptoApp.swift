@@ -12,6 +12,11 @@ struct MyCryptoApp: App {
     
     @StateObject private var vm = HomeViewModel()
     
+    init() {
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor : UIColor(Color.accent)]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(Color.accent)]
+    }
+    
     var body: some Scene {
         WindowGroup {
             NavigationStack{

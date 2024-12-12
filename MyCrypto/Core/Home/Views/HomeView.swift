@@ -10,17 +10,21 @@ import SwiftUI
 struct HomeView: View {
     
     @EnvironmentObject private var vm: HomeViewModel
-    @State private var showPortfolio: Bool = false
+    @State private var showPortfolio: Bool = false     // Animate to the right
+    @State private var showPortfolioView: Bool = false // Show portofolioView
     
     var body: some View {
         ZStack {
             // background layer
             Color.theme.background
                 .ignoresSafeArea()
+                .sheet(isPresented: $showPortfolioView) { PortofolioView() }
             
             // content layer
             VStack {
                 homeHeader
+                
+                HomeStateView(showPortofolio: $showPortfolio)
                 
                 SearchBarView(searchText: $vm.searchText)
                 
@@ -54,6 +58,9 @@ extension HomeView {
         HStack {
             CircleButtonView(iconName: showPortfolio ? "plus" : "info")
                 .animation(.none, value: showPortfolio)
+                .onTapGesture {
+                    if showPortfolio { showPortfolioView = true }
+                }
                 .background(
                     CirlceButtonAnimationView(animate: $showPortfolio)
                 )
@@ -104,6 +111,16 @@ extension HomeView {
             }
             Text("Price")
                 .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+            
+            Button {
+                withAnimation(.linear(duration: 2.0)) {
+                    vm.reloadData()
+                }
+            } label: {
+                Image(systemName: "goforward")
+            }
+            .rotationEffect(.degrees(vm.isLoading ? 360 : 0), anchor: .center)
+
         }
         .padding(.horizontal)
         .foregroundStyle(Color.theme.secondaryText)
