@@ -53,11 +53,6 @@ struct HomeView: View {
     .environmentObject(DeveloperPreview.instance.vm)
 }
 
-// Test commit
-// Test commit 2
-
-// test commit 5
-
 extension HomeView {
     private var homeHeader: some View {
         HStack {
